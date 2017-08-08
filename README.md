@@ -1,5 +1,4 @@
-Data Search Engine
-
+# Data Search Engine
 Apr 2017 – Apr 2017
 Project descriptionProject Description:
 •	Provided a tag rendering a Custom Search Engine input field and a view displaying search results.
