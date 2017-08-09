@@ -4,6 +4,9 @@ import scrapy
 from scrapy.http import Request
 from urllib import parse
 
+from ArticleSpider.items import JobBoleArticleItem
+
+from ArticleSpider.utils.common import get_md5
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
@@ -45,6 +48,10 @@ class JobboleSpider(scrapy.Spider):
 
     #get ariticle's certain information / div
     def parse_detail(self, response):
+
+        #make an instance call article_item
+        article_item = JobBoleArticleItem()
+
 
         # 提取文章的具体字段
         # #unilike array
@@ -114,9 +121,18 @@ class JobboleSpider(scrapy.Spider):
         tag_list = [element for element in tag_list if not element.strip().endswith("评论")]
         tags = ",".join(tag_list)
 
+        article_item["url_object_id"] = get_md5(response.url)
+        article_item["title"] = title
+        article_item["url"] = response.url
+        article_item["create_date"] = create_date
+        article_item["front_image_url"] = [front_image_url]
+        article_item["praise_nums"] = praise_nums
+        article_item["comment_nums"] = comment_nums
+        article_item["fav_nums"] = fav_nums
+        article_item["tags"] = tags
+        article_item["content"] = content
 
-
-
-        pass
+        #send to the pipeline.py, let it receive it
+        yield article_item
 
 
